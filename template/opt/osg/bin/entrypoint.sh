@@ -14,6 +14,16 @@ if [ "$(id -u)" != "1000" ]; then
   done
 fi
 
+## Copy the skeleton directory, if necessary.
+
+if [ -d /etc/skel ]; then
+  for f in /etc/skel/.* /etc/skel/*; do
+    if [ -f "$f" ] && [ ! -e "$HOME/$(basename -- "$f")" ]; then
+      cp "$f" "$HOME"
+    fi
+  done
+fi
+
 ## Write the user's HTCondor IDTOKEN to a file.
 
 _idtokens_dir="$HOME/.condor/tokens.d"
