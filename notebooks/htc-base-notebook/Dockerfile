@@ -29,6 +29,7 @@ COPY entrypoint.sh /.entrypoint.sh
 # install HTCondor, and a few other convenience tools
 # also fix permissions on the files copied above
 RUN apt-get update -y \
+ && apt-get upgrade -y \
  && apt-get install -y gnupg vim less git man \
  && wget -qO - https://research.cs.wisc.edu/htcondor/repo/keys/HTCondor-${HTCONDOR_VERSION}-Key | apt-key add - \
  && echo "deb  https://research.cs.wisc.edu/htcondor/repo/ubuntu/${HTCONDOR_VERSION} focal main" >> /etc/apt/sources.list \
@@ -52,3 +53,30 @@ ENV HTMAP_DELIVERY_METHOD="assume"
 
 ENTRYPOINT ["tini", "-g", "--", "/.entrypoint.sh"]
 CMD ["start-notebook.sh"]
+
+########################
+# Minimal JupyterLab with support for sssd and HTCondor.
+#
+# The intent is that /var/lib/sss/pipes will be shared with some other
+# container that is running an sssd daemon. The notebook container should
+# not include configuration for sssd.
+#
+# In order to accommodate the sharing of sssd's "pipes" directory, we
+# create the sssd user and group with explicit IDs rather than allowing
+# packages to select arbitrary IDs.
+
+USER root
+
+RUN groupadd -r -g 996 sssd \
+    && useradd -r -g sssd -u 996 -d / -s /usr/sbin/nologin -c "System user for sssd" sssd \
+    #
+    && apt-get update \
+    && apt-get install -y sssd \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY opt /opt/
+
+USER $NB_UID:$NB_GID
+
+ENTRYPOINT ["tini", "-g", "--", "/opt/osg/bin/entrypoint.sh"]
