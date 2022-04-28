@@ -29,6 +29,7 @@ COPY entrypoint.sh /.entrypoint.sh
 # install HTCondor, and a few other convenience tools
 # also fix permissions on the files copied above
 RUN apt-get update -y \
+ && apt-get upgrade -y \
  && apt-get install -y gnupg vim less git man \
  && wget -qO - https://research.cs.wisc.edu/htcondor/repo/keys/HTCondor-${HTCONDOR_VERSION}-Key | apt-key add - \
  && echo "deb  https://research.cs.wisc.edu/htcondor/repo/ubuntu/${HTCONDOR_VERSION} focal main" >> /etc/apt/sources.list \
@@ -70,7 +71,6 @@ RUN groupadd -r -g 996 sssd \
     && useradd -r -g sssd -u 996 -d / -s /usr/sbin/nologin -c "System user for sssd" sssd \
     #
     && apt-get update \
-    && apt-get upgrade -y \
     && apt-get install -y sssd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
