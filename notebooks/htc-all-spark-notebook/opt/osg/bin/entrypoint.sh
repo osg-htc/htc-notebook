@@ -3,18 +3,31 @@
 
 set -eu
 
-## Wait for sssd to create its sockets when not running as "jovyan".
+_idtokens_dir="$HOME/.condor/tokens.d"
+_sssd_socket="/var/lib/sss/pipes/nss"
 
-_sssd_socket=/var/lib/sss/pipes/nss
 
-if [ "$(id -u)" != "1000" ]; then
-  until test -e "${_sssd_socket}"; do
-    printf 'Waiting for %s to be created\n' "${_sssd_socket}"
-    sleep 2
-  done
+#---------------------------------------------------------------------------
+# When running as "jovyan", fall back on the original HTC setup.
+
+
+if [ "$(id -u)" = "1000" ]; then
+  exec /.entrypoint.sh "$@"
 fi
 
-## Copy the skeleton directory, if necessary.
+
+#---------------------------------------------------------------------------
+# Otherwise, assume that we're running as some OSPool user:
+#
+#   1. Wait for sssd to create its socket.
+#   2. Copy the skeleton directory.
+#   3. Write the user's HTCondor IDTOKEN to a file.
+
+
+until test -e "${_sssd_socket}"; do
+  printf 'Waiting for %s to be created\n' "${_sssd_socket}"
+  sleep 2
+done
 
 if [ -d /etc/skel ]; then
   for f in /etc/skel/.* /etc/skel/*; do
@@ -23,10 +36,6 @@ if [ -d /etc/skel ]; then
     fi
   done
 fi
-
-## Write the user's HTCondor IDTOKEN to a file.
-
-_idtokens_dir="$HOME/.condor/tokens.d"
 
 if [ -n "${_osg_HTCONDOR_IDTOKEN:-}" ]; then
   if [ ! -d "${_idtokens_dir}" ]; then
