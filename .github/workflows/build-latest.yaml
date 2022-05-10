@@ -14,6 +14,7 @@ jobs:
         image-name:
         - htc-all-spark-notebook
         - htc-datascience-notebook
+        - htc-gpu-jupyter
         - htc-minimal-notebook
         - htc-tensorflow-notebook
 
