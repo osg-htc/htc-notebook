@@ -12,12 +12,10 @@ jobs:
     strategy:
       matrix:
         image-name:
-        - htc-minimal-notebook
-        - htc-r-notebook
-        - htc-scipy-notebook
-        - htc-tensorflow-notebook
-        - htc-datascience-notebook
         - htc-all-spark-notebook
+        - htc-datascience-notebook
+        - htc-minimal-notebook
+        - htc-tensorflow-notebook
 
     steps:
 
