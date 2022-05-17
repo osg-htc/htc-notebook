@@ -2,4 +2,4 @@ jupyter/all-spark-notebook:latest
 jupyter/datascience-notebook:latest
 jupyter/minimal-notebook:latest
 jupyter/tensorflow-notebook:latest
-hub.opensciencegrid.org/osg-jupyter/gpu-jupyter:cuda-11.2.2-build-20220510-1858
+hub.opensciencegrid.org/osg-jupyter/gpu-jupyter:cuda-11.6.1-build-20220517-1811

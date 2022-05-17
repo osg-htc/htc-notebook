@@ -7,7 +7,7 @@
 # Copyright (C) HTCondor Team, Computer Sciences Dept, Univ of Wisconsin-Madison
 # Distributed under terms of the Apache Licence, Version 2.0.
 
-FROM hub.opensciencegrid.org/osg-jupyter/gpu-jupyter:cuda-11.2.2-build-20220510-1858
+FROM hub.opensciencegrid.org/osg-jupyter/gpu-jupyter:cuda-11.6.1-build-20220517-1811
 
 # metadata
 LABEL maintainer="chtc@cs.wisc.edu"
