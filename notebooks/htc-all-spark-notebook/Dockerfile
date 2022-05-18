@@ -75,7 +75,10 @@ RUN groupadd -r -g 996 sssd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+COPY etc /etc/
 COPY opt /opt/
+
+RUN chmod ug=r,o= /etc/sudoers.d/*
 
 USER $NB_UID:$NB_GID
 
