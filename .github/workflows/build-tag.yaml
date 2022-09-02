@@ -1,9 +1,6 @@
 name: Build and push container images for Git tags
 
 on:
-  push:
-    tags:
-    - "[0-9]*"
   repository_dispatch:
     types:
     - build-latest-tag
