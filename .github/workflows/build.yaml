@@ -39,7 +39,6 @@ jobs:
       with:
         flavor: |
           latest=false
-          suffix=-docker
         images: |
           hub.opensciencegrid.org/osg-jupyter/${{ matrix.image-name }}
         tags: |
