@@ -7,7 +7,7 @@
 # Copyright (C) HTCondor Team, Computer Sciences Dept, Univ of Wisconsin-Madison
 # Distributed under terms of the Apache Licence, Version 2.0.
 
-FROM jupyter/all-spark-notebook:latest
+FROM jupyter/all-spark-notebook:ubuntu-20.04
 
 # metadata
 LABEL maintainer="chtc@cs.wisc.edu"
@@ -83,3 +83,13 @@ RUN chmod ug=r,o= /etc/sudoers.d/*
 USER $NB_UID:$NB_GID
 
 ENTRYPOINT ["tini", "-g", "--", "/opt/osg/bin/entrypoint.sh"]
+
+########################
+# Add support for OSG Connect.
+
+USER root
+
+RUN python3 -m pip install -U pip setuptools wheel \
+    && python3 -m pip install -U git+https://github.com/brianaydemir/osgconnect-scripts.git@2to3
+
+USER $NB_UID:$NB_GID
