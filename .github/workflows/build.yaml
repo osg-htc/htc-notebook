@@ -41,7 +41,7 @@ jobs:
           latest=false
           suffix=-docker
         images: |
-          hub.opensciencegrid.org/opensciencegrid/htcondor-file-transfer-ep
+          hub.opensciencegrid.org/osg-jupyter/${{ matrix.image-name }}
         tags: |
           type=ref,event=branch
           type=ref,event=tag
