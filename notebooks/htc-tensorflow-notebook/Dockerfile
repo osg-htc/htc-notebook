@@ -93,3 +93,18 @@ RUN python3 -m pip install -U pip setuptools wheel \
     && python3 -m pip install -U git+https://github.com/brianaydemir/osgconnect-scripts.git@2to3
 
 USER $NB_UID:$NB_GID
+
+########################
+# Add support for Apptainer.
+
+USER root
+
+RUN apt-get update \
+    && apt-get install -y wget \
+    && cd /tmp \
+    && wget https://github.com/apptainer/apptainer/releases/download/v1.1.3/apptainer_1.1.3_amd64.deb \
+    && apt-get install -y ./apptainer_1.1.3_amd64.deb \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+USER $NB_UID:$NB_GID
