@@ -36,6 +36,11 @@ RUN apt-get update -y \
  && chown -R ${NB_UID}:${NB_GID} /home/${NB_USER}/.condor \
  && fix-permissions ${HOME}
 
+# add sudo config for running commands as jovyan
+# (in case the container is being run as some other user)
+COPY 90-run-as-jovyan /etc/sudoers.d/
+RUN chmod ug=r,o= /etc/sudoers.d/*
+
 USER $NB_UID:$NB_GID
 
 # install HTCondor Python bindings, HTChirp, and HTMap
