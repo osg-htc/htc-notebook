@@ -1,8 +1,8 @@
-jupyter/base-notebook:ubuntu-20.04
-jupyter/minimal-notebook:ubuntu-20.04
-jupyter/scipy-notebook:ubuntu-20.04
-jupyter/r-notebook:ubuntu-20.04
-jupyter/tensorflow-notebook:ubuntu-20.04
-jupyter/datascience-notebook:ubuntu-20.04
-jupyter/pyspark-notebook:ubuntu-20.04
-jupyter/all-spark-notebook:ubuntu-20.04
+jupyter/base-notebook:hub-1.3.0
+jupyter/minimal-notebook:hub-1.3.0
+jupyter/scipy-notebook:hub-1.3.0
+jupyter/r-notebook:hub-1.3.0
+jupyter/tensorflow-notebook:hub-1.3.0
+jupyter/datascience-notebook:hub-1.3.0
+jupyter/pyspark-notebook:hub-1.3.0
+jupyter/all-spark-notebook:hub-1.3.0

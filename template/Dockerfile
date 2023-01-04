@@ -129,8 +129,7 @@ USER $NB_UID:$NB_GID
 ########################
 # Add support for OSG Connect.
 
-RUN python3 -m pip install -U --no-cache-dir pip setuptools wheel \
-    && python3 -m pip install -U --no-cache-dir git+https://github.com/brianaydemir/osgconnect-scripts.git@2to3
+RUN python3 -m pip install -U --no-cache-dir git+https://github.com/brianaydemir/osgconnect-scripts.git@2to3
 
 ########################
 # Add support for Apptainer.
@@ -163,6 +162,5 @@ USER $NB_UID:$NB_GID
 ########################
 # Add support to Jupyter for a bash kernel.
 
-RUN python3 -m pip install -U --no-cache-dir pip setuptools wheel \
-    && python3 -m pip install -U --no-cache-dir bash_kernel \
+RUN python3 -m pip install -U --no-cache-dir bash_kernel \
     && python3 -m bash_kernel.install --sys-prefix

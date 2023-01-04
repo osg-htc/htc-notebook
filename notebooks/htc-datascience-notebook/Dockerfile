@@ -7,7 +7,7 @@
 # Copyright (C) HTCondor Team, Computer Sciences Dept, Univ of Wisconsin-Madison
 # Distributed under terms of the Apache Licence, Version 2.0.
 
-FROM jupyter/datascience-notebook:ubuntu-20.04
+FROM jupyter/datascience-notebook:hub-1.3.0
 
 # metadata
 LABEL maintainer="chtc@cs.wisc.edu"
@@ -129,8 +129,7 @@ USER $NB_UID:$NB_GID
 ########################
 # Add support for OSG Connect.
 
-RUN python3 -m pip install -U --no-cache-dir pip setuptools wheel \
-    && python3 -m pip install -U --no-cache-dir git+https://github.com/brianaydemir/osgconnect-scripts.git@2to3
+RUN python3 -m pip install -U --no-cache-dir git+https://github.com/brianaydemir/osgconnect-scripts.git@2to3
 
 ########################
 # Add support for Apptainer.
@@ -163,6 +162,5 @@ USER $NB_UID:$NB_GID
 ########################
 # Add support to Jupyter for a bash kernel.
 
-RUN python3 -m pip install -U --no-cache-dir pip setuptools wheel \
-    && python3 -m pip install -U --no-cache-dir bash_kernel \
+RUN python3 -m pip install -U --no-cache-dir bash_kernel \
     && python3 -m bash_kernel.install --sys-prefix
