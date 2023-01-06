@@ -52,7 +52,10 @@ RUN chmod ug=r,o= /etc/sudoers.d/*
 USER $NB_UID:$NB_GID
 
 # install HTCondor Python bindings, HTChirp, and HTMap
-RUN pip install --no-cache-dir htcondor htchirp htmap
+RUN pip install --no-cache-dir \
+      htchirp \
+      htcondor==$(condor_version | head -n1 | cut -d " " -f 2) \
+      htmap
 
 # set up environment variable hooks for HTMap settings
 # todo: once HTMap can decide the delivery method itself, remove it from here!
