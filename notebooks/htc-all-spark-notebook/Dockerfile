@@ -125,6 +125,7 @@ RUN cd /tmp \
           stashcp \
           stash_plugin \
           /usr/bin/ \
+    && ln -s stashcp /usr/bin/osdf_cp \
     && rm -rf ${OSDF_CLIENT_TGZ}
 
 USER $NB_UID:$NB_GID
