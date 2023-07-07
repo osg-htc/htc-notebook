@@ -31,18 +31,22 @@ RUN apt-get update -y \
  && apt-get clean -y \
  && rm -rf /var/lib/apt/lists/* \
  #
- # Install HTCondor. Immediately stop the pool in case the installation
- # script automatically started it.
+ # Install HTCondor.
  #
- && curl -fsSL https://get.htcondor.org | /bin/bash -s -- --no-dry-run \
- && condor_off -master \
- && sleep 5 \
+ && curl -fsSL https://research.cs.wisc.edu/htcondor/repo/keys/HTCondor-10.x-Key | apt-key add - \
+ && echo "deb [arch=amd64] http://research.cs.wisc.edu/htcondor/repo/ubuntu/10.x jammy main" > /etc/apt/sources.list.d/htcondor.list \
+ && apt-get update -y \
+ && apt-get install -y minihtcondor \
  #
  # Fix permissions on various files and directories.
  #
  && chmod +x /.entrypoint.sh \
  && chown -R ${NB_UID}:${NB_GID} /home/${NB_USER}/.condor \
- && fix-permissions ${HOME}
+ && fix-permissions ${HOME} \
+ #
+ # Create the directory for "additional runtime customizations".
+ #
+ && mkdir /image-init.d/
 
 # add sudo config for running commands as jovyan
 # (in case the container is being run as some other user)
@@ -54,7 +58,7 @@ USER $NB_UID:$NB_GID
 # install HTCondor Python bindings, HTChirp, and HTMap
 RUN pip install --no-cache-dir \
       htchirp \
-      htcondor'>'=$(condor_version | head -n1 | cut -d " " -f 2) \
+      htcondor \
       htmap
 
 # set up environment variable hooks for HTMap settings
