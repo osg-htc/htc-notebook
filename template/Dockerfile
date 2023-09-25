@@ -172,3 +172,12 @@ USER $NB_UID:$NB_GID
 
 RUN python3 -m pip install -U --no-cache-dir bash_kernel \
     && python3 -m bash_kernel.install --sys-prefix
+
+########################
+# Other customizations for OSG.
+
+USER root
+
+RUN sed -i -e 's/@\\h//' /etc/bash.bashrc /home/jovyan/.bashrc
+
+USER $NB_UID:$NB_GID
