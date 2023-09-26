@@ -144,7 +144,7 @@ RUN python3 -m pip install -U --no-cache-dir git+https://github.com/brianaydemir
 
 USER root
 
-ARG APPTAINER_VERSION=1.1.3
+ARG APPTAINER_VERSION=1.2.3
 ARG APPTAINER_DEB=apptainer_${APPTAINER_VERSION}_amd64.deb
 
 RUN cd /tmp \
