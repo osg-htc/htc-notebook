@@ -181,3 +181,5 @@ USER root
 RUN sed -i -e 's/@\\h//' /etc/bash.bashrc /home/jovyan/.bashrc
 
 USER $NB_UID:$NB_GID
+
+RUN jupyter labextension disable "@jupyterlab/apputils-extension:announcements"
