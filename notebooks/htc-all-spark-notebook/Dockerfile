@@ -7,7 +7,7 @@
 # Copyright (C) HTCondor Team, Computer Sciences Dept, Univ of Wisconsin-Madison
 # Distributed under terms of the Apache Licence, Version 2.0.
 
-FROM jupyter/all-spark-notebook:hub-3.0.0
+FROM jupyter/all-spark-notebook:hub-4.0.2
 
 # metadata
 LABEL maintainer="chtc@cs.wisc.edu"
