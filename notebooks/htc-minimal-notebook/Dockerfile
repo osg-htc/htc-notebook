@@ -33,8 +33,8 @@ RUN apt-get update -y \
  #
  # Install HTCondor.
  #
- && curl -fsSL https://research.cs.wisc.edu/htcondor/repo/keys/HTCondor-10.x-Key | apt-key add - \
- && echo "deb [arch=amd64] http://research.cs.wisc.edu/htcondor/repo/ubuntu/10.x jammy main" > /etc/apt/sources.list.d/htcondor.list \
+ && curl -fsSL https://research.cs.wisc.edu/htcondor/repo/keys/HTCondor-23.x-Key | apt-key add - \
+ && echo "deb [arch=amd64] http://research.cs.wisc.edu/htcondor/repo/ubuntu/23.x jammy main" > /etc/apt/sources.list.d/htcondor.list \
  && apt-get update -y \
  && apt-get install -y minihtcondor \
  #
@@ -144,7 +144,7 @@ RUN python3 -m pip install -U --no-cache-dir git+https://github.com/brianaydemir
 
 USER root
 
-ARG APPTAINER_VERSION=1.2.3
+ARG APPTAINER_VERSION=1.3.1
 ARG APPTAINER_DEB=apptainer_${APPTAINER_VERSION}_amd64.deb
 
 RUN cd /tmp \
