@@ -31,12 +31,12 @@ RUN apt-get update -y \
  && apt-get clean -y \
  && rm -rf /var/lib/apt/lists/* \
  #
- # Install HTCondor.
+ # Install HTCondor and Pelican.
  #
  && curl -fsSL https://research.cs.wisc.edu/htcondor/repo/keys/HTCondor-23.x-Key | apt-key add - \
  && echo "deb [arch=amd64] http://research.cs.wisc.edu/htcondor/repo/ubuntu/23.x jammy main" > /etc/apt/sources.list.d/htcondor.list \
  && apt-get update -y \
- && apt-get install -y minihtcondor \
+ && apt-get install -y minihtcondor pelican pelican-osdf-compat \
  #
  # Fix permissions on various files and directories.
  #
@@ -107,30 +107,6 @@ RUN groupadd -r -g 996 sssd \
     && apt-get install -y sssd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-USER $NB_UID:$NB_GID
-
-########################
-# Add support for OSDF.
-
-USER root
-
-ARG OSDF_CLIENT_VERSION=6.9.4
-ARG OSDF_CLIENT_TGZ=osdf-client_${OSDF_CLIENT_VERSION}_Linux_x86_64.tar.gz
-
-RUN cd /tmp \
-    && wget https://github.com/htcondor/osdf-client/releases/download/v${OSDF_CLIENT_VERSION}/${OSDF_CLIENT_TGZ} \
-    && tar zxvf ${OSDF_CLIENT_TGZ} \
-          osdf_config_mgr \
-          stashcp \
-          stash_plugin \
-    && mv \
-          osdf_config_mgr \
-          stashcp \
-          stash_plugin \
-          /usr/bin/ \
-    && ln -s stashcp /usr/bin/osdf_cp \
-    && rm -rf ${OSDF_CLIENT_TGZ}
 
 USER $NB_UID:$NB_GID
 
