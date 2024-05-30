@@ -35,6 +35,7 @@ RUN apt-get update -y \
     #
     # Fix permissions on various files and directories.
     #
+    && mkdir -p /home/${NB_USER}/.condor \
     && chown -R ${NB_UID}:${NB_GID} /home/${NB_USER}/.condor \
     && fix-permissions ${HOME} \
     #
