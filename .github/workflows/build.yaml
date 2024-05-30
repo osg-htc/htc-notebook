@@ -25,14 +25,8 @@ jobs:
     strategy:
       matrix:
         image-name:
-        - htc-base-notebook
         - htc-minimal-notebook
-        - htc-scipy-notebook
-        - htc-r-notebook
-        - htc-tensorflow-notebook
         - htc-datascience-notebook
-        - htc-pyspark-notebook
-        - htc-all-spark-notebook
 
     steps:
 
