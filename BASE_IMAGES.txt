@@ -1,8 +1,2 @@
-jupyter/base-notebook:hub-4.0.2
-jupyter/minimal-notebook:hub-4.0.2
-jupyter/scipy-notebook:hub-4.0.2
-jupyter/r-notebook:hub-4.0.2
-jupyter/tensorflow-notebook:hub-4.0.2
-jupyter/datascience-notebook:hub-4.0.2
-jupyter/pyspark-notebook:hub-4.0.2
-jupyter/all-spark-notebook:hub-4.0.2
+quay.io/jupyter/minimal-notebook:hub-4.1.5
+quay.io/jupyter/datascience-notebook:hub-4.1.5

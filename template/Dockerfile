@@ -8,66 +8,53 @@
 # Distributed under terms of the Apache Licence, Version 2.0.
 
 FROM <BASE_IMAGE>
-
-# metadata
 LABEL maintainer="chtc@cs.wisc.edu"
-
-# default to jupyter lab
-ENV JUPYTER_ENABLE_LAB=1
-
 USER root
 
-# add HTCondor config
-COPY condor_config.local /etc/condor/condor_config.local
 
-# add an entrypoint that starts HTCondor
-COPY entrypoint.sh /.entrypoint.sh
+## Default to JupyterLab.
+ENV JUPYTER_ENABLE_LAB=1
 
-# install HTCondor, and a few other convenience tools
-# also fix permissions on the files copied above
-RUN apt-get update -y \
- && apt-get upgrade -y \
- && apt-get install -y curl git gnupg less man vim wget \
- && apt-get clean -y \
- && rm -rf /var/lib/apt/lists/* \
- #
- # Install HTCondor and Pelican.
- #
- && curl -fsSL https://research.cs.wisc.edu/htcondor/repo/keys/HTCondor-23.x-Key | apt-key add - \
- && echo "deb [arch=amd64] http://research.cs.wisc.edu/htcondor/repo/ubuntu/23.x jammy main" > /etc/apt/sources.list.d/htcondor.list \
- && apt-get update -y \
- && apt-get install -y minihtcondor pelican pelican-osdf-compat \
- #
- # Fix permissions on various files and directories.
- #
- && chmod +x /.entrypoint.sh \
- && chown -R ${NB_UID}:${NB_GID} /home/${NB_USER}/.condor \
- && fix-permissions ${HOME} \
- #
- # Create the directory for "additional runtime customizations".
- #
- && mkdir /image-init.d/
 
-# add sudo config for running commands as jovyan
-# (in case the container is being run as some other user)
+## Add `sudo` configuration for running commands as `jovyan`.
 COPY 90-run-as-jovyan /etc/sudoers.d/
-RUN chmod ug=r,o= /etc/sudoers.d/*
+RUN chmod 400 /etc/sudoers.d/*
 
-USER $NB_UID:$NB_GID
 
-# install HTCondor Python bindings, HTChirp, and HTMap
-RUN pip install --no-cache-dir \
-      htchirp \
-      htcondor \
-      htmap
-
-# set up environment variable hooks for HTMap settings
-# todo: once HTMap can decide the delivery method itself, remove it from here!
-# todo: embed image name so HTMap can use the same image for exec
+## Install HTCondor and other tools.
+RUN apt-get update -y \
+    && apt-get upgrade -y \
+    && apt-get install -y curl git gnupg less man vim wget \
+    #
+    && curl -fsSL https://research.cs.wisc.edu/htcondor/repo/keys/HTCondor-23.x-Key | apt-key add - \
+    && echo "deb [arch=amd64] http://research.cs.wisc.edu/htcondor/repo/ubuntu/23.x jammy main" > /etc/apt/sources.list.d/htcondor.list \
+    && apt-get update -y \
+    && apt-get install -y minihtcondor pelican pelican-osdf-compat \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/* \
+    #
+    # Fix permissions on various files and directories.
+    #
+    && chown -R ${NB_UID}:${NB_GID} /home/${NB_USER}/.condor \
+    && fix-permissions ${HOME} \
+    #
+    # Create a directory for "additional runtime customizations."
+    #
+    && mkdir /image-init.d/ \
+    #
+    # Make other customizations for OSG and the OSPool.
+    #
+    && sed -i -e 's/@\\h//' /etc/bash.bashrc /home/jovyan/.bashrc \
+    && true
+COPY condor_config.local /etc/condor/condor_config.local
 ENV HTMAP_DELIVERY_METHOD="assume"
 
-ENTRYPOINT ["tini", "-g", "--", "/.entrypoint.sh"]
+
+## Add an entrypoint that starts HTCondor.
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["tini", "-g", "--", "/entrypoint.sh"]
 CMD ["start-notebook.sh"]
+
 
 ########################
 # Add support for integrating with non-Ubuntu environments.
@@ -80,12 +67,9 @@ CMD ["start-notebook.sh"]
 # must agree on its location. We create the symlink for this here, but leave
 # it to the running container to configure HTCondor to actually use it.
 
-USER root
-
 RUN mkdir -p /usr/libexec \
     && ln -s /usr/lib/condor/libexec /usr/libexec/condor
 
-USER $NB_UID:$NB_GID
 
 ########################
 # Add support for sssd.
@@ -98,8 +82,6 @@ USER $NB_UID:$NB_GID
 # create the sssd user and group with explicit IDs rather than allowing
 # packages to select arbitrary IDs.
 
-USER root
-
 RUN groupadd -r -g 996 sssd \
     && useradd -r -g sssd -u 996 -d / -s /usr/sbin/nologin -c "System user for sssd" sssd \
     #
@@ -108,19 +90,11 @@ RUN groupadd -r -g 996 sssd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-USER $NB_UID:$NB_GID
-
-########################
-# Add support for OSG Connect.
-
-RUN python3 -m pip install -U --no-cache-dir git+https://github.com/brianaydemir/osgconnect-scripts.git@2to3
 
 ########################
 # Add support for Apptainer.
 
-USER root
-
-ARG APPTAINER_VERSION=1.3.1
+ARG APPTAINER_VERSION=1.3.2
 ARG APPTAINER_DEB=apptainer_${APPTAINER_VERSION}_amd64.deb
 
 RUN cd /tmp \
@@ -133,29 +107,31 @@ RUN cd /tmp \
     #
     # Signal to Apptainer that it is running in an unprivileged container.
     # Reference: https://apptainer.org/docs/user/main/fakeroot.html.
+    #
     && rm -rf /etc/subuid /etc/subgid \
+    #
     # Do not allow users to utilize the setuid program flow within Apptainer.
     # Do not automatically bind mount /proc within the container.
+    #
     && sed -i \
           -e 's/^allow setuid.*$/allow setuid = no/' \
           -e 's/^mount proc.*$/mount proc = no/' \
           /etc/apptainer/apptainer.conf
 
-USER $NB_UID:$NB_GID
 
 ########################
-# Add support to Jupyter for a bash kernel.
-
-RUN python3 -m pip install -U --no-cache-dir bash_kernel \
-    && python3 -m bash_kernel.install --sys-prefix
-
-########################
-# Other customizations for OSG.
-
-USER root
-
-RUN sed -i -e 's/@\\h//' /etc/bash.bashrc /home/jovyan/.bashrc
+# Make other assorted updates to the Jupyter Python environment.
 
 USER $NB_UID:$NB_GID
 
-RUN jupyter labextension disable "@jupyterlab/apputils-extension:announcements"
+RUN true \
+    && python3 -m pip install -U --no-cache-dir \
+          bash_kernel \
+          htchirp \
+          htcondor \
+          htmap \
+          jupyterlab_git \
+          git+https://github.com/brianaydemir/osgconnect-scripts.git@2to3 \
+    && python3 -m bash_kernel.install --sys-prefix \
+    && jupyter labextension disable "@jupyterlab/apputils-extension:announcements" \
+    && true
