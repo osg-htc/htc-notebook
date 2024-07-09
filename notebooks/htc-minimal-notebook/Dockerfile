@@ -83,8 +83,8 @@ RUN mkdir -p /usr/libexec \
 # create the sssd user and group with explicit IDs rather than allowing
 # packages to select arbitrary IDs.
 
-RUN groupadd -r -g 996 sssd \
-    && useradd -r -g sssd -u 996 -d / -s /usr/sbin/nologin -c "System user for sssd" sssd \
+RUN groupadd -r -g 990 sssd \
+    && useradd -r -g sssd -u 990 -d / -s /usr/sbin/nologin -c "System user for sssd" sssd \
     #
     && apt-get update \
     && apt-get install -y sssd \
