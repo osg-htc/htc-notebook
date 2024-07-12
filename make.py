@@ -33,6 +33,8 @@ def main():
         # write out the the modified Dockerfile for this image
         df = image_dir / 'Dockerfile'
         df_text = DF_TEMPLATE.replace('<BASE_IMAGE>', base_image)
+        if 'datascience' in image:
+            df_text += '\n' + (ROOT / 'extras/rstudio/Dockerfile').read_text()
         df.write_text(df_text)
 
 
