@@ -131,6 +131,7 @@ RUN true \
           htchirp \
           htcondor \
           htmap \
+          jupyter_resource_usage \
           jupyterlab_git \
           git+https://github.com/brianaydemir/osgconnect-scripts.git@2to3 \
     && python3 -m bash_kernel.install --sys-prefix \
