@@ -112,11 +112,9 @@ RUN cd /tmp \
     && rm -rf /etc/subuid /etc/subgid \
     #
     # Do not allow users to utilize the setuid program flow within Apptainer.
-    # Do not automatically bind mount /proc within the container.
     #
     && sed -i \
           -e 's/^allow setuid.*$/allow setuid = no/' \
-          -e 's/^mount proc.*$/mount proc = no/' \
           /etc/apptainer/apptainer.conf
 
 
