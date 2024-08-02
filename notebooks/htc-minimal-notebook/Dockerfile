@@ -124,6 +124,9 @@ RUN cd /tmp \
 USER $NB_UID:$NB_GID
 
 RUN true \
+    # Allow notebooks to use kernels in Conda environments.
+    && conda install nb_conda_kernels \
+    # Install HTCondor, and additional kernels and plugins.
     && python3 -m pip install -U --no-cache-dir \
           bash_kernel \
           htchirp \
