@@ -1,4 +1,4 @@
-quay.io/jupyter/minimal-notebook:hub-4.1.5
-quay.io/jupyter/datascience-notebook:hub-4.1.5
-quay.io/jupyter/pytorch-notebook:cuda12-hub-4.1.5
-quay.io/jupyter/tensorflow-notebook:cuda-hub-4.1.5
+quay.io/jupyter/minimal-notebook:hub-4.1.6
+quay.io/jupyter/datascience-notebook:hub-4.1.6
+quay.io/jupyter/pytorch-notebook:cuda12-hub-4.1.6
+quay.io/jupyter/tensorflow-notebook:cuda-hub-4.1.6
