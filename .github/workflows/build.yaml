@@ -16,6 +16,7 @@ on:
     tags:
     - '[0-9]+.[0-9]+*'
     paths:
+    - BASE_IMAGES.txt
     - notebooks/**
   workflow_dispatch:
 
