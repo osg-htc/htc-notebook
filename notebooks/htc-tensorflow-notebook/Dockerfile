@@ -33,6 +33,10 @@ RUN apt-get update -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
     #
+    # Fix the minicondor config.
+    #
+    && echo 'CONDOR_HOST = $(IP_ADDRESS)' > /etc/condor/config.d/00-fix-minicondor \
+    #
     # Fix permissions on various files and directories.
     #
     && mkdir -p /home/${NB_USER}/.condor \
