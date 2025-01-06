@@ -26,8 +26,10 @@ RUN apt-get update -y \
     && apt-get upgrade -y \
     && apt-get install -y curl git gnupg less man openjdk-21-jdk vim wget \
     #
-    && curl -fsSL https://research.cs.wisc.edu/htcondor/repo/keys/HTCondor-23.x-Key | apt-key add - \
-    && echo "deb [arch=amd64] http://research.cs.wisc.edu/htcondor/repo/ubuntu/23.x jammy main" > /etc/apt/sources.list.d/htcondor.list \
+    # Install HTCondor.
+    #
+    && curl -fsSL https://research.cs.wisc.edu/htcondor/repo/keys/HTCondor-24.x-Key | apt-key add - \
+    && echo "deb http://research.cs.wisc.edu/htcondor/repo/ubuntu/24.x noble main" > /etc/apt/sources.list.d/htcondor.list \
     && apt-get update -y \
     && apt-get install -y minihtcondor pelican pelican-osdf-compat \
     && apt-get clean -y \
@@ -99,7 +101,7 @@ RUN groupadd -r -g 990 sssd \
 ########################
 # Add support for Apptainer.
 
-ARG APPTAINER_VERSION=1.3.2
+ARG APPTAINER_VERSION=1.3.6
 ARG APPTAINER_DEB=apptainer_${APPTAINER_VERSION}_amd64.deb
 
 RUN cd /tmp \
