@@ -146,6 +146,7 @@ RUN true \
           jupyter_resource_usage \
           jupyterlab_git \
           git+https://github.com/brianaydemir/osgconnect-scripts.git@2to3 \
+          git+https://github.com/brianaydemir/pelicanplatform-pelicanfs@relax-dependencies \
     && python3 -m bash_kernel.install --sys-prefix \
     && jupyter labextension disable "@jupyterlab/apputils-extension:announcements" \
     && true
