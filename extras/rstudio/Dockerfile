@@ -4,7 +4,7 @@
 # and make it easy to access
 #     (https://github.com/jupyterhub/jupyter-rsession-proxy).
 
-ARG RSTUDIO_DEB=rstudio-server-2024.12.0-467-amd64.deb
+ARG RSTUDIO_DEB=rstudio-server-2025.05.1-513-amd64.deb
 
 USER root
 
@@ -12,7 +12,7 @@ RUN true \
     #
     # Upgrade R.
     #
-    && mamba install -y 'r-base~=4.4.2' \
+    && mamba install -y 'r-base~=4.5.1' \
     #
     # Install only the RStudio package.
     # R itself is already installed into the Conda environment.
