@@ -145,6 +145,7 @@ RUN true \
           htmap \
           jupyter_resource_usage \
           jupyterlab_git \
+          jupyterlab_server_timer \
           git+https://github.com/brianaydemir/osgconnect-scripts.git@2to3 \
           git+https://github.com/PelicanPlatform/pelicanfs.git@84550e384ea28b3066bb9997d3e59517029cd2a2 \
     && python3 -m bash_kernel.install --sys-prefix \
