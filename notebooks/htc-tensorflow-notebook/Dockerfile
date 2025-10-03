@@ -7,7 +7,7 @@
 # Copyright (C) HTCondor Team, Computer Sciences Dept, Univ of Wisconsin-Madison
 # Distributed under terms of the Apache Licence, Version 2.0.
 
-FROM quay.io/jupyter/tensorflow-notebook:cuda-hub-5.2.1
+FROM quay.io/jupyter/tensorflow-notebook:cuda-hub-5.3.0
 LABEL maintainer="chtc@cs.wisc.edu"
 USER root
 
