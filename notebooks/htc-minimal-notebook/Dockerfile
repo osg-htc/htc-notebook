@@ -24,7 +24,7 @@ RUN chmod 400 /etc/sudoers.d/*
 ## Install HTCondor and other tools.
 RUN apt-get update -y \
     && apt-get upgrade -y \
-    && apt-get install -y curl git gnupg less man openjdk-21-jdk vim wget \
+    && apt-get install -y curl git gnupg less man vim wget \
     #
     # Install HTCondor.
     #
@@ -133,11 +133,6 @@ RUN true \
     # Allow notebooks to use kernels in Conda environments.
     && conda install nb_conda_kernels \
     # Install HTCondor, and additional kernels and plugins.
-    && (cd /tmp \
-        && curl -fsSL -O https://github.com/SpencerPark/IJava/releases/download/v1.3.0/ijava-1.3.0.zip \
-        && unzip ijava-1.3.0.zip \
-        && python3 install.py --sys-prefix \
-        && rm -rf /tmp/ijava-1.3.0.zip /tmp/install.py /tmp/java) \
     && python3 -m pip install -U --no-cache-dir \
           bash_kernel \
           htchirp \
