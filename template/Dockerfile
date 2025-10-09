@@ -28,8 +28,8 @@ RUN apt-get update -y \
     #
     # Install HTCondor.
     #
-    && curl -fsSL https://research.cs.wisc.edu/htcondor/repo/keys/HTCondor-24.x-Key | apt-key add - \
-    && echo "deb http://research.cs.wisc.edu/htcondor/repo/ubuntu/24.x noble main" > /etc/apt/sources.list.d/htcondor.list \
+    && curl -fsSL https://research.cs.wisc.edu/htcondor/repo/keys/HTCondor-25.x-Key | apt-key add - \
+    && echo "deb http://research.cs.wisc.edu/htcondor/repo/ubuntu/25.x noble main" > /etc/apt/sources.list.d/htcondor.list \
     && apt-get update -y \
     && apt-get install -y minicondor pelican pelican-osdf-compat \
     && apt-get clean -y \
