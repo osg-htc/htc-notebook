@@ -101,7 +101,7 @@ RUN groupadd -r -g 990 sssd \
 ########################
 # Add support for Apptainer.
 
-ARG APPTAINER_VERSION=1.4.1
+ARG APPTAINER_VERSION=1.4.3
 ARG APPTAINER_DEB=apptainer_${APPTAINER_VERSION}_amd64.deb
 
 RUN cd /tmp \
