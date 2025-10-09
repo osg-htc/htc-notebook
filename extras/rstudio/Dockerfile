@@ -4,7 +4,7 @@
 # and make it easy to access
 #     (https://github.com/jupyterhub/jupyter-rsession-proxy).
 
-ARG RSTUDIO_DEB=rstudio-server-2025.05.1-513-amd64.deb
+ARG RSTUDIO_DEB=rstudio-server-2025.09.1-401-amd64.deb
 
 USER root
 
