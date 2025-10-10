@@ -23,7 +23,6 @@ RUN chmod 400 /etc/sudoers.d/*
 
 ## Install HTCondor and other tools.
 RUN apt-get update -y \
-    && apt-get upgrade -y \
     && apt-get install -y curl git gnupg less man vim wget \
     #
     # Install HTCondor.
