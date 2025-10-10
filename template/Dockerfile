@@ -124,24 +124,24 @@ RUN cd /tmp \
 
 
 ########################
-# Add support for Pixi.
+# Make other assorted updates to the Jupyter Python environment.
 
 ARG PIXI_VERSION=v0.56.0
 ARG PIXI_ARCHIVE=pixi-x86_64-unknown-linux-musl.tar.gz
 
 RUN true \
+    # Install Pixi.
     && (mkdir -p /tmp/pixi \
         && cd /tmp/pixi \
         && curl -fsSL -O https://github.com/prefix-dev/pixi/releases/download/${PIXI_VERSION}/${PIXI_ARCHIVE} \
         && tar zxvf ${PIXI_ARCHIVE} \
         && cp pixi /usr/local/bin \
         && rm -rf /tmp/pixi) \
-    && python3 -m pip install -U --no-cache-dir pixi-kernel \
+    # Make other configuration updates that must be done as root.
+    && printf '%s\n' >>/etc/jupyter/jupyter_server_config.py \
+    && printf '%s\n' "# Configure nb_conda_kernels." >>/etc/jupyter/jupyter_server_config.py \
+    && printf '%s\n' "c.CondaKernelSpecManager.conda_only = true" >>/etc/jupyter/jupyter_server_config.py \
     && true
-
-
-########################
-# Make other assorted updates to the Jupyter Python environment.
 
 USER $NB_UID:$NB_GID
 
@@ -157,6 +157,7 @@ RUN true \
           jupyter_resource_usage \
           jupyterlab_git \
           jupyterlab_server_timer \
+          pixi-kernel \
           git+https://github.com/brianaydemir/osgconnect-scripts.git@2to3 \
           git+https://github.com/PelicanPlatform/pelicanfs.git@84550e384ea28b3066bb9997d3e59517029cd2a2 \
     && python3 -m bash_kernel.install --sys-prefix \
