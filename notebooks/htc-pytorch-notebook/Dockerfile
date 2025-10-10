@@ -124,6 +124,23 @@ RUN cd /tmp \
 
 
 ########################
+# Add support for Pixi.
+
+ARG PIXI_VERSION=v0.56.0
+ARG PIXI_ARCHIVE=pixi-x86_64-unknown-linux-musl.tar.gz
+
+RUN true \
+    && (mkdir -p /tmp/pixi \
+        && cd /tmp/pixi \
+        && curl -fsSL -O https://github.com/prefix-dev/pixi/releases/download/${PIXI_VERSION}/${PIXI_ARCHIVE} \
+        && tar zxvf ${PIXI_ARCHIVE} \
+        && cp pixi /usr/local/bin \
+        && rm -rf /tmp/pixi) \
+    && python3 -m pip install -U --no-cache-dir pixi-kernel \
+    && true
+
+
+########################
 # Make other assorted updates to the Jupyter Python environment.
 
 USER $NB_UID:$NB_GID
