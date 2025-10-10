@@ -140,7 +140,7 @@ RUN true \
     # Make other configuration updates that must be done as root.
     && printf '%s\n' >>/etc/jupyter/jupyter_server_config.py \
     && printf '%s\n' "# Configure nb_conda_kernels." >>/etc/jupyter/jupyter_server_config.py \
-    && printf '%s\n' "c.CondaKernelSpecManager.conda_only = true" >>/etc/jupyter/jupyter_server_config.py \
+    && printf '%s\n' "c.CondaKernelSpecManager.conda_only = True" >>/etc/jupyter/jupyter_server_config.py \
     && true
 
 USER $NB_UID:$NB_GID
