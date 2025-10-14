@@ -140,7 +140,7 @@ RUN true \
     # Make other configuration updates that must be done as root.
     && printf '%s\n' >>/etc/jupyter/jupyter_server_config.py \
     && printf '%s\n' "# Configure nb_conda_kernels." >>/etc/jupyter/jupyter_server_config.py \
-    && printf '%s\n' "c.CondaKernelSpecManager.name_format = '{display_name} (conda env: {environment})'" >>/etc/jupyter/jupyter_server_config.py \
+    && printf '%s\n' "c.CondaKernelSpecManager.name_format = '{display_name} (conda: {environment})'" >>/etc/jupyter/jupyter_server_config.py \
     # && printf '%s\n' "c.CondaKernelSpecManager.env_filter = r'^(?!base)(.*)'" >>/etc/jupyter/jupyter_server_config.py \
     && true
 
