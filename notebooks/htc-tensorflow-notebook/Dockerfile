@@ -31,6 +31,7 @@ RUN apt-get update -y \
     && echo "deb http://research.cs.wisc.edu/htcondor/repo/ubuntu/25.x noble main" > /etc/apt/sources.list.d/htcondor.list \
     && apt-get update -y \
     && apt-get install -y minicondor pelican pelican-osdf-compat \
+    && apt-get install -y imagemagick \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/* \
     #
