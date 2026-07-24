@@ -127,7 +127,7 @@ RUN cd /tmp \
 ########################
 # Make other assorted updates to the Jupyter Python environment.
 
-ARG PIXI_VERSION=v0.56.0
+ARG PIXI_VERSION=v0.73.0
 ARG PIXI_ARCHIVE=pixi-x86_64-unknown-linux-musl.tar.gz
 
 RUN true \
